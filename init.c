@@ -7,19 +7,19 @@
 void disable_watch_dog();
 void memsetup();
 
-/*ÉÏµçºó£¬WATCH DOGÄ¬ÈÏÊÇ¿ª×ÅµÄ£¬Òª°ÑËü¹Øµô */
+/*ä¸Šç”µåï¼ŒWATCH DOGé»˜è®¤æ˜¯å¼€ç€çš„ï¼Œè¦æŠŠå®ƒå…³æ‰ */
 void disable_watch_dog()
 {
 	WTCON	= 0;
 }
 
-/* ÉèÖÃ¿ØÖÆSDRAMµÄ13¸ö¼Ä´æÆ÷ */
+/* è®¾ç½®æ§åˆ¶SDRAMçš„13ä¸ªå¯„å­˜å™¨ */
 void memsetup()
 {
 	int 	i = 0;
 	unsigned long *p = (unsigned long *)MEM_CTL_BASE;
 
-    /* SDRAM 13¸ö¼Ä´æÆ÷µÄÖµ */
+    /* SDRAM 13ä¸ªå¯„å­˜å™¨çš„å€¼ */
     unsigned long  const    mem_cfg_val[]={ 0x22011110,     //BWSCON
                                             0x00000700,     //BANKCON0
                                             0x00000700,     //BANKCON1

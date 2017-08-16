@@ -1,26 +1,26 @@
 @******************************************************************************
-@ File£ºhead.s
-@ ¹¦ÄÜ£ºÉèÖÃSDRAM£¬½«³ÌĞò¸´ÖÆµ½SDRAM£¬È»ºóÌøµ½SDRAM¼ÌĞøÖ´ĞĞ
+@ Fileï¼šhead.s
+@ åŠŸèƒ½ï¼šè®¾ç½®SDRAMï¼Œå°†ç¨‹åºå¤åˆ¶åˆ°SDRAMï¼Œç„¶åè·³åˆ°SDRAMç»§ç»­æ‰§è¡Œ
 @******************************************************************************       
   
 .text
 .global _start
 _start:
-                                            @º¯Êıdisable_watch_dog, memsetup, init_nand, nand_read_llÔÚinit.cÖĞ¶¨Òå
-            ldr     sp, =4096               @ÉèÖÃ¶ÑÕ» 
-            bl      disable_watch_dog       @¹ØWATCH DOG
-            bl      memsetup                @³õÊ¼»¯SDRAM
-            bl      nand_init               @³õÊ¼»¯NAND Flash
+                                            @å‡½æ•°disable_watch_dog, memsetup, init_nand, nand_read_llåœ¨init.cä¸­å®šä¹‰
+            ldr     sp, =4096               @è®¾ç½®å †æ ˆ 
+            bl      disable_watch_dog       @å…³WATCH DOG
+            bl      memsetup                @åˆå§‹åŒ–SDRAM
+            bl      nand_init               @åˆå§‹åŒ–NAND Flash
 
-                                            @½«NAND FlashÖĞµØÖ·4096¿ªÊ¼µÄ1024×Ö½Ú´úÂë(main.c±àÒëµÃµ½)¸´ÖÆµ½SDRAMÖĞ
-                                            @nand_read_llº¯ÊıĞèÒª3¸ö²ÎÊı£º
-            ldr     r0,     =0x30000000     @1. Ä¿±êµØÖ·=0x30000000£¬ÕâÊÇSDRAMµÄÆğÊ¼µØÖ·
-            mov     r1,     #4096           @2.  Ô´µØÖ·   = 4096£¬Á¬½ÓµÄÊ±ºò£¬main.cÖĞµÄ´úÂë¶¼´æÔÚNAND FlashµØÖ·4096¿ªÊ¼´¦
-            mov     r2,     #2048           @3.  ¸´ÖÆ³¤¶È= 2048(bytes)£¬¶ÔÓÚ±¾ÊµÑéµÄmain.c£¬ÕâÊÇ×ã¹»ÁË
-            bl      nand_read               @µ÷ÓÃCº¯Êınand_read
+                                            @å°†NAND Flashä¸­åœ°å€4096å¼€å§‹çš„1024å­—èŠ‚ä»£ç (main.cç¼–è¯‘å¾—åˆ°)å¤åˆ¶åˆ°SDRAMä¸­
+                                            @nand_read_llå‡½æ•°éœ€è¦3ä¸ªå‚æ•°ï¼š
+            ldr     r0,     =0x30000000     @1. ç›®æ ‡åœ°å€=0x30000000ï¼Œè¿™æ˜¯SDRAMçš„èµ·å§‹åœ°å€
+            mov     r1,     #4096           @2.  æºåœ°å€   = 4096ï¼Œè¿æ¥çš„æ—¶å€™ï¼Œmain.cä¸­çš„ä»£ç éƒ½å­˜åœ¨NAND Flashåœ°å€4096å¼€å§‹å¤„
+            mov     r2,     #2048           @3.  å¤åˆ¶é•¿åº¦= 2048(bytes)ï¼Œå¯¹äºæœ¬å®éªŒçš„main.cï¼Œè¿™æ˜¯è¶³å¤Ÿäº†
+            bl      nand_read               @è°ƒç”¨Cå‡½æ•°nand_read
 
-            ldr     sp, =0x34000000         @ÉèÖÃÕ»
-            ldr     lr, =halt_loop          @ÉèÖÃ·µ»ØµØÖ·
-            ldr     pc, =main               @bÖ¸ÁîºÍblÖ¸ÁîÖ»ÄÜÇ°ºóÌø×ª32MµÄ·¶Î§£¬ËùÒÔÕâÀïÊ¹ÓÃÏòpc¸³ÖµµÄ·½·¨½øĞĞÌø×ª
+            ldr     sp, =0x34000000         @è®¾ç½®æ ˆ
+            ldr     lr, =halt_loop          @è®¾ç½®è¿”å›åœ°å€
+            ldr     pc, =main               @bæŒ‡ä»¤å’ŒblæŒ‡ä»¤åªèƒ½å‰åè·³è½¬32Mçš„èŒƒå›´ï¼Œæ‰€ä»¥è¿™é‡Œä½¿ç”¨å‘pcèµ‹å€¼çš„æ–¹æ³•è¿›è¡Œè·³è½¬
 halt_loop:
             b       halt_loop
