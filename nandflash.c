@@ -63,7 +63,8 @@ static void s3c2440_nand_deselect_chip(void)
 /* 发出命令 */
 static void s3c2440_write_cmd(int cmd)
 {
-	*((volatile unsigned char*)&s3c2440nand->NFCMD) = cmd;
+    volatile unsigned char *p = (volatile unsigned char *)&s3c2440nand->NFCMD;
+    *p = cmd;
 }
 
 /* 发出地址 */
@@ -76,7 +77,7 @@ static void s3c2440_write_addr_lp(unsigned int addr)
 	col = addr & NAND_BLOCK_MASK_LP;
 	page = addr / NAND_SECTOR_SIZE_LP;
 	
-	*p = col % 0xff;			/* Column Address A0~A7  在某页中的序号*/
+	*p = col & 0xff;			/* Column Address A0~A7 */
 	for(i=0; i<10; i++);		
 	*p = (col >> 8) & 0x0f; 	/* Column Address A8~A11 页序号*/
 	for(i=0; i<10; i++);
@@ -91,7 +92,8 @@ static void s3c2440_write_addr_lp(unsigned int addr)
 /* 读取数据 */
 static unsigned char s3c2440_read_data(void)
 {
-	return *((volatile unsigned char*)&(s3c2410nand->NFDATA));	
+    volatile unsigned char *p = (volatile unsigned char *)&s3c2440nand->NFDATA;
+    return *p;
 }
 
 /* 在第一次使用NAND Flash前，复位一下NAND Flash */
@@ -134,7 +136,7 @@ static unsigned char read_data(void)
 /*NandFlash initial*/
 void nand_init(void)
 {
-	if(GSTATUS1 == 0x32410001){      /*the chip id of s3c2440 is 0x32410001*/
+//	if(GSTATUS1 == 0x32440001){      /*the chip id of s3c2440 is 0x32410001*/
 		nand_chip.nand_reset 		 = s3c2440_nand_reset;   /*initial nandflash operation functions*/
 		nand_chip.wait_idle          = s3c2440_wait_idle;
         nand_chip.nand_select_chip   = s3c2440_nand_select_chip;
@@ -146,8 +148,9 @@ void nand_init(void)
 		nand_chip.write_addr		 = s3c2440_write_addr;
 #endif
 		nand_chip.read_data          = s3c2440_read_data;
-		}	
+//		}	
         s3c2440nand->NFCONF = (TACLS<<12)|(TWRPH0<<8)|(TWRPH1<<4);	/*set clock*/
+		s3c2440nand->NFCONT = (1<<4)|(1<<1)|(1<<0);
 	    nand_reset();                                          /*reset nandflash*/		
 }
 
